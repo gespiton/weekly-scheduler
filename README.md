@@ -1,3 +1,13 @@
-## goad
+## edit mode
 
-* [ ]  support multiple event per slot
+
+
+
+
+## view mode
+
+- how to display multiple event
+  - animating it! a rotating cubic
+- tab to zoom in
+- swipe to change week
+
