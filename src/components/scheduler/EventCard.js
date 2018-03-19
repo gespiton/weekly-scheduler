@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import toggleDetailView from '../../redux/actions/toggleDetailCard';
+import PropTypes from 'prop-types';
 
 
 @connect(
@@ -12,14 +13,17 @@ import toggleDetailView from '../../redux/actions/toggleDetailCard';
   }
 )
 class EventCard extends Component {
+  static propTypes = {
+    toggleDetailView: PropTypes.func
+  };
 
   constructor(props) {
     super(props);
     this.state = {style: {}};
-    this.onClick = this.onClick.bind(this);
+    this.checkEventCard = this.checkEventCard.bind(this);
   }
 
-  onClick(e) {
+  checkEventCard(e) {
     document.body.className = 'modal-open';
     this.props.toggleDetailView({shown: true, event: {name: 'haha'}})
     // const rect = e.target.getBoundingClientRect();
@@ -36,7 +40,7 @@ class EventCard extends Component {
   render() {
     const that = this;
     return (
-      <div className="card" style={that.state.style} onClick={this.onClick}>
+      <div className="card" style={that.state.style} onClick={this.checkEventCard}>
         <span>test</span>
       </div>
     )

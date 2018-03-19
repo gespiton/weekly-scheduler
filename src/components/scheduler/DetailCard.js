@@ -1,8 +1,9 @@
 import React, {Component} from "react";
 import {connect} from 'react-redux';
+import toggleDetailView from '../../redux/actions/toggleDetailCard';
+import PropTypes from 'prop-types';
 
-const overlay = (
-  <div className="overlay"/>);
+const overlay = onclick => (<div className="overlay" onClick={onclick}/>);
 
 
 @connect(
@@ -11,11 +12,27 @@ const overlay = (
       detailView: state.detailView
     }
   },
-  null
+  dispatch => {
+    return {
+      hide: () => dispatch(toggleDetailView({shown: false, event: {}}))
+    }
+  }
 )
 class DetailCard extends Component {
+  static propTypes = {
+    hide: PropTypes.func,
+    detailView: PropTypes.object
+  };
+
   constructor(props) {
     super(props);
+    this.closeView = this.closeView.bind(this);
+  }
+
+
+  closeView() {
+    document.body.className = "";
+    this.props.hide();
   }
 
   render() {
@@ -23,8 +40,8 @@ class DetailCard extends Component {
     const that = this;
     console.log(that.props.detailView.shown);
     return (
-      <div className={that.props.detailView.shown ? 'invisible' : 'hide'}>
-        {overlay}
+      <div className={'no-space ' + (that.props.detailView.shown ? 'invisible' : 'hide')}>
+        {overlay(that.closeView)}
         <div id="detail-card">
           {that.props.detailView.event.name}
         </div>

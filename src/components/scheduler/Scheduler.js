@@ -17,6 +17,7 @@ const createDay = (data, dayOfWeek) => {
   for (let i = 0; i !== 6; ++i) { //todo hard code number
     const key = `${dayOfWeek} ${i}`;
     if (arr[i]) {
+
       components.push(<EventCard key={key}/>);
     } else {
       components.push(<div key={key} className="card empty"/>)
