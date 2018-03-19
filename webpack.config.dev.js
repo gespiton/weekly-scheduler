@@ -41,7 +41,15 @@ export default {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
+        use: [{
+          loader: 'babel-loader',
+          options: {
+            plugins: [
+              "transform-decorators-legacy",
+              'transform-class-properties'
+            ]
+          }
+        }]
       },
       {
         test: /\.eot(\?v=\d+.\d+.\d+)?$/,

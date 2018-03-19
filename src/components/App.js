@@ -8,6 +8,7 @@ import Auth from './Auth';
 
 class App extends React.Component {
   render() {
+    const that = this;
     return (
       <div>
         <header>
