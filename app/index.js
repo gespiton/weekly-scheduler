@@ -8,6 +8,9 @@ import initialState from './redux/reducers/initialState';
 import Root from './components/Root';
 import './styles/styles.sass'; // Yep, that's right. You can import SASS/CSS files too! Webpack will run the associated loader and plug this into the page.
 require('./favicon.ico'); // Tell webpack to load favicon.ico
+require('./api');
+
+
 const store = configureStore(initialState);
 
 render(

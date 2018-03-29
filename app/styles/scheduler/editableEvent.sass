@@ -1,0 +1,49 @@
+.editable-event-card
+  .item
+    display: grid
+    grid-template-columns: 1fr 4fr
+
+    height: 4rem
+    padding: 0.5em 0
+
+    .attr
+      background-color: #66a27f
+      color: whitesmoke
+
+      align-self: center
+      border-radius: 4px
+      padding: 5px 10px
+      margin-right: 1em
+    //height: 100%
+
+    span.val
+      align-self: center
+      border-radius: 4px
+      padding: 5px 10px
+      font-size: 1.2rem
+      font-weight: bold
+
+      text-align: left
+
+
+    input.val
+      margin: 0
+      display: inline-block
+    select.val
+      margin: 0
+      display: inline-block
+
+  .operation-panel
+    display: flex
+    flex-direction: row
+    justify-content: space-around
+    font-size: 2em
+    transition: all 0.3s ease-in-out
+    height: 2em
+
+    &.minimize
+      height: 0
+
+
+
+

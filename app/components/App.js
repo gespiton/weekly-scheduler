@@ -9,7 +9,6 @@ import Auth from './Auth';
 
 class App extends React.Component {
   render() {
-    const that = this;
     return (
       [
         <div id="nav" className="navbar-fixed">
@@ -27,13 +26,11 @@ class App extends React.Component {
             </ul>
           </nav>
         </div>,
-        <div id="main">
-          <Switch>
-            <Route exact path="/" component={Scheduler}/>
-            {/*<Route exact path="/logIn" component={Auth}/>*/}
-            <Route component={NotFoundPage}/>
-          </Switch>
-        </div>
+        <Switch>
+          <Route exact path="/" component={Scheduler}/>
+          <Route exact path="/logIn" component={Auth}/>
+          <Route component={NotFoundPage}/>
+        </Switch>
       ]
     );
   }

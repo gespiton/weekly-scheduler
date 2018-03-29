@@ -33,4 +33,5 @@ for (const day in days) {
   res[days[day]] = events;
 }
 
+// console.((res));
 export default res;

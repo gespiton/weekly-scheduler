@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import toggleDetailView from '../../redux/actions/toggleDetailCard';
 import PropTypes from 'prop-types';
+import {eventType} from '../../types/index';
 
 
 @connect(
@@ -15,7 +16,7 @@ import PropTypes from 'prop-types';
 class EventCard extends Component {
   static propTypes = {
     toggleDetailView: PropTypes.func,
-    event: PropTypes.array,
+    event: PropTypes.arrayOf(eventType),
     pos: PropTypes.string
   };
 

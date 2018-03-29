@@ -29,7 +29,6 @@ class DetailCard extends Component {
     this.closeView = this.closeView.bind(this);
   }
 
-
   closeView() {
     document.body.className = "";
     this.props.hide();
@@ -45,7 +44,7 @@ class DetailCard extends Component {
         <div id="detail-card" className={that.props.detailView.shown ? 'expand' : 'minimize'}>
           <span>{pos}</span>
           <ul className="collection">
-            {event.map((e, i) => (<EditableEvent key={`${pos} ${i}`} event={e}/>))}
+            {event.map((e, i) => (<EditableEvent time={`${pos} ${i}`} key={`${pos} ${i}`} event={e}/>))}
           </ul>
         </div>
       </div>

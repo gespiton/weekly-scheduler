@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 import day from '../../constants/dayOfWeek';
 
-import data from './data';
 import EventCard from './EventCard';
 import DetailCard from './detail-card/DetailCard';
+import {connect} from 'react-redux';
+import PropType from 'prop-types';
+import api from '../../api/index';
+import populateSchedule from '../../redux/actions/populateSchedule';
 
 const createDay = (data, dayOfWeek) => {
   data = data || [];
@@ -32,7 +35,24 @@ const createDay = (data, dayOfWeek) => {
 };
 
 
+@connect(
+  state => {
+    return {
+      schedule: state.schedule
+    }
+  },
+  dispatch => {
+    return {
+      populateSchedule: schedule => dispatch(populateSchedule(schedule))
+    }
+  }
+)
 class Scheduler extends Component {
+  static propTypes = {
+    schedule: PropType.object,
+    populateSchedule: PropType.func
+  };
+
   constructor(props) {
     super(props);
 
@@ -49,9 +69,17 @@ class Scheduler extends Component {
     this.pressTimer = setTimeout(() => alert(e.currentTarget), 2000);
   }
 
+  componentDidMount() {
+    api.getDefaultSchedule()
+      .then(doc => {
+        if (doc.exists) {
+          this.props.populateSchedule(doc.data());
+        }
+      });
+  }
+
 
   render() {
-    const that = this;
     return (
       <div id="content">
         <DetailCard/>
@@ -64,13 +92,13 @@ class Scheduler extends Component {
           <span>Fri</span>
           <span>Sat</span>
           <span>Sun</span>
-          {createDay(data.monday, day.monday)}
-          {createDay(data.tuesday, day.tuesday)}
-          {createDay(data.wednesday, day.wednesday)}
-          {createDay(data.thursday, day.thursday)}
-          {createDay(data.friday, day.friday)}
-          {createDay(data.saturday, day.saturday)}
-          {createDay(data.sunday, day.sunday)}
+          {createDay(this.props.schedule.monday, day.monday)}
+          {createDay(this.props.schedule.tuesday, day.tuesday)}
+          {createDay(this.props.schedule.wednesday, day.wednesday)}
+          {createDay(this.props.schedule.thursday, day.thursday)}
+          {createDay(this.props.schedule.friday, day.friday)}
+          {createDay(this.props.schedule.saturday, day.saturday)}
+          {createDay(this.props.schedule.sunday, day.sunday)}
         </main>
       </div>
     );

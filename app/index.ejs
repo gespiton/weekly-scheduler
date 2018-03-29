@@ -31,27 +31,33 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <!-- Make sure theme-color is defined -->
   <meta name="theme-color" content="#536878">
+
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"
+          integrity="sha384-SlE991lGASHoBfWbelyBPLsUlwY1GwNDJo3jSJO04KZ33K2bwfV9YBauFfnzvynJ"
+          crossorigin="anonymous"></script>
+
+
 </head>
 
 <body>
 <div id="app">loading</div>
 
 <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function () {
-      navigator.serviceWorker.register('service-worker.js', {scope: '/'}).then(function (registration) {
-        // Registration was successful
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      }, function (err) {
-        // registration failed :(
-        console.log('ServiceWorker registration failed: ', err);
-      }).catch(function (err) {
-        console.log(err)
-      });
-    });
-  } else {
-    console.log('service worker is not supported');
-  }
+  // if ('serviceWorker' in navigator) {
+  //   window.addEventListener('load', function () {
+  //     navigator.serviceWorker.register('service-worker.js', {scope: '/'}).then(function (registration) {
+  //       // Registration was successful
+  //       console.log('ServiceWorker registration successful with scope: ', registration.scope);
+  //     }, function (err) {
+  //       // registration failed :(
+  //       console.log('ServiceWorker registration failed: ', err);
+  //     }).catch(function (err) {
+  //       console.log(err)
+  //     });
+  //   });
+  // } else {
+  //   console.log('service worker is not supported');
+  // }
 </script>
 
 <!--<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>-->
