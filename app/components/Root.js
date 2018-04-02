@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {ConnectedRouter} from 'react-router-redux';
 import {Provider} from 'react-redux';
 import App from './App';
+import Loader from './Loader';
 
 // require('jquery');
 require('materialize-css');

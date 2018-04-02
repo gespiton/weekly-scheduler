@@ -5,13 +5,14 @@ import {Switch, NavLink, Route} from 'react-router-dom';
 import NotFoundPage from './NotFoundPage';
 import Scheduler from './scheduler/Scheduler';
 import Auth from './Auth';
+import Loader from './Loader';
 
 
 class App extends React.Component {
   render() {
     return (
       [
-        <div id="nav" className="navbar-fixed">
+        <div key={'nav'} id="nav" className="navbar-fixed">
           <nav className="nav-wrapper">
             <ul id="nav-mobile">
               <li>
@@ -26,10 +27,11 @@ class App extends React.Component {
             </ul>
           </nav>
         </div>,
-        <Switch>
-          <Route exact path="/" component={Scheduler}/>
+        <Loader key={'background-loader'}/>,
+        < Switch key={'route'}>
+          < Route exact path="/" component={Scheduler}/>
           <Route exact path="/logIn" component={Auth}/>
-          <Route component={NotFoundPage}/>
+          < Route component={NotFoundPage}/>
         </Switch>
       ]
     );

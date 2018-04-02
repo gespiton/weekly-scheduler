@@ -1,10 +1,16 @@
-import webpack from 'webpack';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import ManifestPlugin from 'webpack-manifest-plugin';
-import path from 'path';
-import CopyWebpackPlugin from 'copy-webpack-plugin';
+// import webpack from 'webpack';
+// import HtmlWebpackPlugin from 'html-webpack-plugin';
+// import ManifestPlugin from 'webpack-manifest-plugin';
+// import path from 'path';
+// import CopyWebpackPlugin from 'copy-webpack-plugin';
+const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 
-export default {
+
+module.exports = {
   resolve: {
     extensions: ['*', '.js', '.jsx', '.json']
   },
@@ -132,7 +138,7 @@ export default {
           }, {
             loader: 'sass-loader',
             options: {
-              includePaths: [path.resolve(__dirname, 'app', 'scss')],
+              includePaths: [path.resolve(__dirname, 'app', 'styles')],
               sourceMap: true
             }
           }

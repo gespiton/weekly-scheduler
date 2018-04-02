@@ -66,8 +66,17 @@ export default {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
+        use: [{
+          loader: 'babel-loader',
+          options: {
+            plugins: [
+              "transform-decorators-legacy",
+              'transform-class-properties'
+            ]
+          }
+        }]
       },
+
       {
         test: /\.eot(\?v=\d+.\d+.\d+)?$/,
         use: [
@@ -150,7 +159,7 @@ export default {
             }, {
               loader: 'sass-loader',
               options: {
-                includePaths: [path.resolve(__dirname, 'app', 'scss')],
+                includePaths: [path.resolve(__dirname, 'app', 'styles')],
                 sourceMap: true
               }
             }

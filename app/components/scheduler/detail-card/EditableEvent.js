@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import PropType from 'prop-types';
 import {connect} from 'react-redux';
-import modifySchedule from '../../../redux/actions/modifySchedule';
+import modifySchedule from '../../../redux/actions/updateEvent';
+import deleteEvent from '../../../redux/actions/deleteEvent';
 import {eventType} from '../../../types/index';
 import api from '../../../api/index';
 import scheduleOp from '../../../utils/scheduleOperation';
@@ -19,6 +20,16 @@ import scheduleOp from '../../../utils/scheduleOperation';
           .catch(function () {
             console.log("update fail");
           });
+      },
+      deleteEvent: function (time, oriSchedule) {
+        api.updateDefaultSchedule(scheduleOp.deleteEvent(oriSchedule, time))
+          .then(function () {
+            console.log("delete success");
+            dispatch(deleteEvent(time));
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
       }
     }
   }
@@ -27,7 +38,8 @@ class EditableEvent extends Component {
   static propTypes = {
     event: eventType.isRequired,
     time: PropType.string,
-    modifyEvent: PropType.func
+    modifyEvent: PropType.func,
+    deleteEvent: PropType.func
   };
 
   static contextTypes = {store: PropType.object};
@@ -39,6 +51,7 @@ class EditableEvent extends Component {
     this.openPanel = this.openPanel.bind(this);
     this.changeValue = this.changeValue.bind(this);
     this.saveEvent = this.saveEvent.bind(this);
+    this.deleteEvent = this.deleteEvent.bind(this);
   }
 
   openPanel(e) {
@@ -51,14 +64,13 @@ class EditableEvent extends Component {
   }
 
   deleteEvent(e) {
-
+    //todo ask if delete ?
+    this.props.deleteEvent(this.props.time, this.context.store.getState().schedule);
   }
 
 
-  saveEvent(e) {
-    console.log(this.context.store.getState().schedule);
+  saveEvent() {
     const event = {};
-
     event.name = this.state.name;
     event.place = this.state.place;
     event.week = this.state.week;
@@ -109,7 +121,7 @@ class EditableEvent extends Component {
         }
 
         <div className={"operation-panel " + (this.state.panelOpen ? 'expand' : 'minimize')}>
-          <span className="icon"> <i className="fas fa-trash-alt"/> </span>
+          <span className="icon" onClick={this.deleteEvent}> <i className="fas fa-trash-alt"/> </span>
           <span className="icon" onClick={this.saveEvent}> <i className="fas fa-check"/> </span>
           <span className="icon" onClick={this.openPanel}> <i className="fas fa-chevron-up"/> </span>
         </div>

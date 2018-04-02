@@ -26,8 +26,8 @@ class EventCard extends Component {
     this.showDetailView = this.showDetailView.bind(this);
   }
 
-  showDetailView(e) {
-    document.body.className = 'modal-open';
+  showDetailView() {
+    // document.body.className = 'modal-open';
     const events = this.props.event.filter(e => this.isInThisWeek(e.week));
     this.props.toggleDetailView({shown: true, event: events, pos: this.props.pos})
   }

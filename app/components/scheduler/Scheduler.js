@@ -7,6 +7,8 @@ import {connect} from 'react-redux';
 import PropType from 'prop-types';
 import api from '../../api/index';
 import populateSchedule from '../../redux/actions/populateSchedule';
+import toggleLoader from '../../redux/actions/toggleLoader';
+import wrapper from '../../utils/requestWrapper';
 
 const createDay = (data, dayOfWeek) => {
   data = data || [];
@@ -42,8 +44,16 @@ const createDay = (data, dayOfWeek) => {
     }
   },
   dispatch => {
+    const _toggleLoader = shown => dispatch(toggleLoader({shown}));
     return {
-      populateSchedule: schedule => dispatch(populateSchedule(schedule))
+      populateSchedule: () => {
+        wrapper(api.getDefaultSchedule(), _toggleLoader)
+          .then(doc => {
+            if (doc.exists) {
+              dispatch(populateSchedule(doc.data()));
+            }
+          });
+      },
     }
   }
 )
@@ -58,9 +68,9 @@ class Scheduler extends Component {
 
     this.pressRelease = this.pressRelease.bind(this);
     this.cardPressed = this.cardPressed.bind(this);
-
   }
 
+  //todo delete long press action
   pressRelease(e) {
     clearTimeout(this.pressTimer);
   }
@@ -70,14 +80,8 @@ class Scheduler extends Component {
   }
 
   componentDidMount() {
-    api.getDefaultSchedule()
-      .then(doc => {
-        if (doc.exists) {
-          this.props.populateSchedule(doc.data());
-        }
-      });
+    this.props.populateSchedule();
   }
-
 
   render() {
     return (
