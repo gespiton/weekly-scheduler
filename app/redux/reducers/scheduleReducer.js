@@ -20,7 +20,6 @@ export default function (state = initialState.schedule, action) {
       return action.schedule;
     }
 
-
     default:
       return state;
   }

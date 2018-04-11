@@ -1,10 +1,6 @@
-## edit mode
+## later
+- [ ] localize font-awesome package
 
-
-
-
-
-## view mode
 
 - how to display multiple event
   - animating it! a rotating cubic

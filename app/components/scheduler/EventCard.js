@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import toggleDetailView from '../../redux/actions/toggleDetailCard';
+import {toggleDetailCard} from '../../redux/actions/index';
 import PropTypes from 'prop-types';
 import {eventType} from '../../types/index';
 
@@ -9,7 +9,7 @@ import {eventType} from '../../types/index';
   null,
   dispatch => {
     return {
-      toggleDetailView: args => dispatch(toggleDetailView(args))
+      toggleDetailView: args => dispatch(toggleDetailCard(args))
     }
   }
 )
@@ -23,14 +23,13 @@ class EventCard extends Component {
   constructor(props) {
     super(props);
     this.state = {style: {}};
-    this.showDetailView = this.showDetailView.bind(this);
   }
 
-  showDetailView() {
+  showDetailView = () => {
     // document.body.className = 'modal-open';
     const events = this.props.event.filter(e => this.isInThisWeek(e.week));
     this.props.toggleDetailView({shown: true, event: events, pos: this.props.pos})
-  }
+  };
 
 
   isInThisWeek(week) {

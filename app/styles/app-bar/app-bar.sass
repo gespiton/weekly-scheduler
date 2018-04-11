@@ -1,0 +1,31 @@
+@import "../mixins/ripple-effect"
+
+#app-bar
+  background-color: #f1f1f1
+  display: flex
+  flex-direction: row
+
+  #drawer-toggler
+    align-self: center
+    padding: 1em
+    position: relative
+
+  @include ripple-effect(#f1f1f1, pink)
+
+  #schedule-title
+    align-self: center
+    font-size: 24px
+    color: #333
+    margin-left: 1em
+
+  .bounce
+    animation: btn-bounce 0.5s
+
+  @keyframes btn-bounce
+    10%
+      transform: scale(0.5)
+
+    50%
+      transform: scale(1.2)
+    100%
+      transform: scale(1)

@@ -1,0 +1,14 @@
+@mixin ripple-effect($ori-color,$background-color)
+  .ripple
+    transition: background 0.8s
+    background: $ori-color center
+    tab-index: -1
+    cursor: pointer
+
+  .ripple:hover
+    background: $background-color radial-gradient(circle, transparent 1%, $background-color 1%) center/15000%
+
+  .ripple:active
+    background-color: transparent
+    background-size: 100%
+    transition: background 0s

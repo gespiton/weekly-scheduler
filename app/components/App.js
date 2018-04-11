@@ -6,31 +6,18 @@ import NotFoundPage from './NotFoundPage';
 import Scheduler from './scheduler/Scheduler';
 import Auth from './Auth';
 import Loader from './Loader';
+import AppBar from './app-bar/AppBar';
 
 
 class App extends React.Component {
   render() {
     return (
       [
-        <div key={'nav'} id="nav" className="navbar-fixed">
-          <nav className="nav-wrapper">
-            <ul id="nav-mobile">
-              <li>
-                <NavLink exact to="/">Main</NavLink>
-              </li>
-              <li>
-                <NavLink to="/edit">edit</NavLink>
-              </li>
-              <li>
-                <NavLink to="/logIn">github log in</NavLink>
-              </li>
-            </ul>
-          </nav>
-        </div>,
+        <AppBar key={"add-bar"}/>,
         <Loader key={'background-loader'}/>,
         < Switch key={'route'}>
           < Route exact path="/" component={Scheduler}/>
-          <Route exact path="/logIn" component={Auth}/>
+          < Route exact path="/logIn" component={Auth}/>
           < Route component={NotFoundPage}/>
         </Switch>
       ]

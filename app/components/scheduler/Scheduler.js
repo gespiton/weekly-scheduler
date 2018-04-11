@@ -6,9 +6,10 @@ import DetailCard from './detail-card/DetailCard';
 import {connect} from 'react-redux';
 import PropType from 'prop-types';
 import api from '../../api/index';
-import populateSchedule from '../../redux/actions/populateSchedule';
-import toggleLoader from '../../redux/actions/toggleLoader';
+import {toggleLoader, populateSchedule} from '../../redux/actions/index';
 import wrapper from '../../utils/requestWrapper';
+import getCurrentWeek from '../../utils/time';
+import dbConstants from '../../constants/dbConstants';
 
 const createDay = (data, dayOfWeek) => {
   data = data || [];
@@ -22,7 +23,6 @@ const createDay = (data, dayOfWeek) => {
   for (let i = 0; i !== 6; ++i) { //todo hard code number
     const key = `${dayOfWeek} ${i + 1}`;
     if (arr[i]) {
-
       components.push(<EventCard key={key} pos={key} event={arr[i].events}/>);
     } else {
       components.push(<div key={key} className="card empty"/>)
@@ -37,6 +37,8 @@ const createDay = (data, dayOfWeek) => {
 };
 
 
+
+
 @connect(
   state => {
     return {
@@ -44,15 +46,19 @@ const createDay = (data, dayOfWeek) => {
     }
   },
   dispatch => {
-    const _toggleLoader = shown => dispatch(toggleLoader({shown}));
+    const _toggleLoader = shown => dispatch(toggleLoader(shown));
     return {
       populateSchedule: () => {
         wrapper(api.getDefaultSchedule(), _toggleLoader)
           .then(doc => {
-            if (doc.exists) {
-              dispatch(populateSchedule(doc.data()));
+            if (doc) {
+              dispatch(populateSchedule(doc));
             }
-          });
+          })
+          .catch(() => {
+            console.log("fail to load");
+          })
+        ;
       },
     }
   }
@@ -80,7 +86,9 @@ class Scheduler extends Component {
   }
 
   componentDidMount() {
-    this.props.populateSchedule();
+    if (Object.keys(this.props.schedule).length === 0) {
+      this.props.populateSchedule();
+    }
   }
 
   render() {

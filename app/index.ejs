@@ -42,36 +42,23 @@
 <div id="app">loading</div>
 
 <script>
-  // if ('serviceWorker' in navigator) {
-  //   window.addEventListener('load', function () {
-  //     navigator.serviceWorker.register('service-worker.js', {scope: '/'}).then(function (registration) {
-  //       // Registration was successful
-  //       console.log('ServiceWorker registration successful with scope: ', registration.scope);
-  //     }, function (err) {
-  //       // registration failed :(
-  //       console.log('ServiceWorker registration failed: ', err);
-  //     }).catch(function (err) {
-  //       console.log(err)
-  //     });
-  //   });
-  // } else {
-  //   console.log('service worker is not supported');
-  // }
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('service-worker.js', {scope: '/'}).then(function (registration) {
+        // Registration was successful
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      }, function (err) {
+        // registration failed :(
+        console.log('ServiceWorker registration failed: ', err);
+      }).catch(function (err) {
+        console.log(err)
+      });
+    });
+  } else {
+    console.log('service worker is not supported');
+  }
 </script>
 
-<!--<script src="https://www.gstatic.com/firebasejs/4.11.0/firebase.js"></script>-->
-<!--<script>-->
-<!--// Initialize Firebase-->
-<!--var config = {-->
-<!--apiKey: "AIzaSyBtjdIpz-4Lq3vSDPRCIiyRAlEmwR-qNKE",-->
-<!--authDomain: "weekly-scheduler.firebaseapp.com",-->
-<!--databaseURL: "https://weekly-scheduler.firebaseio.com",-->
-<!--projectId: "weekly-scheduler",-->
-<!--storageBucket: "",-->
-<!--messagingSenderId: "525804016085"-->
-<!--};-->
-<!--firebase.initializeApp(config);-->
-<!--</script>-->
 </body>
 
 
