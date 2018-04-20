@@ -1,5 +1,6 @@
 import * as firebase from "firebase";
-import dbConstants from "../constants/dbConstants";
+import idbManager from './lib/idbManager';
+import Request from './lib/FirebaseRequest';
 
 require("firebase/firestore");
 
@@ -19,105 +20,50 @@ const col_schedule = 'schedules';
 
 const db = firebase.firestore();
 
+
 function getDefaultSchedule() {
-  if (navigator.onLine) {
-    return db.collection(col_schedule).doc('default').get().then(doc => {
+  const request = new Request(
+    function request() {
+      return db.collection(col_schedule).doc('default').get();
+    },
+
+    function postRequest(doc) {
       if (doc.exists) {
-        saveDocToIDB(doc.data());
+        idbManager.saveDocToIDB(doc.data());
         return doc.data();
-      } else {
-        return null;
       }
-    });
-  } else {
+    },
 
-    return getSchedule('default');
-  }
-
-
-}
-
-function updateDefaultSchedule(schedule) {
-  return db.collection(col_schedule).doc('default').set(schedule);
-
-}
-
-function getIDB() {
-  return new Promise((resolve, reject) => {
-    if (window.idb) {
-      return resolve(window.idb);
+    function fallback() {
+      return idbManager.getSchedule('default');
     }
-
-    const request = window.indexedDB.open(dbConstants.INDEX_DB_NAME);
-
-    request.onsuccess = event => {
-      const db = window.idb = event.target.result;
-      resolve(db);
-    };
-
-    request.onerror = e => {
-      reject(e);
-    };
-  });
+  );
+  return request.excute;
 }
 
-function saveDocToIDB(doc) {
-  if (!window.idb) {
-    const request = window.indexedDB.open(dbConstants.INDEX_DB_NAME);
+function updateDefaultSchedule() {
+  //todo insert timestamp
+  const request = new Request(
+    function request(schedule) {
+      this.schedule = schedule;
+      return db.collection(col_schedule).doc('default').set(schedule);
+    },
 
-    request.onsuccess = event => {
-      window.idb = event.target.result;
-      _saveDoc(doc);
-    };
+    function postRequest() {
+      console.log("update local");
+      return idbManager.saveDocToIDB(this.requestArg[0]);
+    },
 
-    request.onerror = e => {
-      console.log(e);
-    };
+    function fallback() {
+      //todo update local idb, set timestamp
+    }
+  );
 
-    return;
-  }
-
-  _saveDoc(doc);
+  return request.excute;
 }
 
-function _saveDoc(doc) {
-  const transaction = window.idb.transaction(["schedules"], "readwrite");
-
-  transaction.oncomplete = function (event) {
-  };
-
-  transaction.onerror = function (event) {
-    // Don't forget to handle errors!
-  };
-
-  const objectStore = transaction.objectStore("schedules");
-
-  const request = objectStore.put({name: 'default', schedule: doc});
-  request.onsuccess = function (event) {
-    console.log('doc saved');
-  };
-
-}
-
-function getSchedule(scheduleName) {
-  return getIDB()
-    .then(db => {
-        return new Promise((resolve, reject) => {
-          const request = db.transaction(['schedules']).objectStore("schedules").get(scheduleName);
-
-          request.onerror = err => {
-            reject(err);
-          };
-
-          request.onsuccess = event => {
-            resolve(event.target.result.schedule);
-          }
-        });
-      }
-    );
-}
 
 export default {
-  getDefaultSchedule,
-  updateDefaultSchedule
+  getDefaultSchedule: getDefaultSchedule(),
+  updateDefaultSchedule: updateDefaultSchedule()
 }

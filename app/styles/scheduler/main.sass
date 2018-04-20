@@ -18,7 +18,7 @@ span
   text-align: center
 
 #content > *
-  background: pink
+  background: white
 
 header
   grid-area: header
@@ -27,24 +27,33 @@ header
   //grid-area: calender
   height: 100%
   display: grid
-  grid-template-columns: repeat(7, 1fr)
+  grid-template-columns: repeat(5, 1fr)
   grid-template-rows: 2em auto
   grid-gap: 0
   padding: 1em
   .day
     display: grid
-    grid-template-rows: repeat(6, 1fr)
     color: white
+
   .card
     word-break: break-all
-    background: rgba(255, 0, 0, 0.3)
+    background: #555
     padding: 0.5em
     border-radius: 4px
     margin: 2px
     transition: 0.5s all ease-in-out
     transform-origin: top left
+    .event-item
+      padding: 4px 0
+      &:nth-child(n+2)
+        border-top: 1px solid white
+
     &.empty
-      background: rgba(0, 0, 0, 0.1)
+      background: rgba(0, 0, 0, 0.5)
+    &:nth-child(even)
+      background: #333
+    &.current
+      background: mediumaquamarine
 
 footer
   grid-area: footer

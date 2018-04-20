@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {toggleDetailCard} from '../../redux/actions/index';
 import PropTypes from 'prop-types';
 import {eventType} from '../../types/index';
+import timeUtils from '../../utils/time';
 
 
 @connect(
@@ -17,7 +18,8 @@ class EventCard extends Component {
   static propTypes = {
     toggleDetailView: PropTypes.func,
     event: PropTypes.arrayOf(eventType),
-    pos: PropTypes.string
+    pos: PropTypes.string,
+    isCurrent: PropTypes.bool
   };
 
   constructor(props) {
@@ -33,8 +35,16 @@ class EventCard extends Component {
 
 
   isInThisWeek(week) {
-    //todo implement this
-    return true;
+    if (week === 'every') {
+      return true;
+    }
+
+    const even = timeUtils.isEvenWeek();
+    if (week === 'even') {
+      return even;
+    } else {
+      return !even;
+    }
   }
 
 
@@ -42,14 +52,14 @@ class EventCard extends Component {
     const that = this;
     const events = this.props.event.filter(e => this.isInThisWeek(e.week));
     return (
-      <div className="card waves-effect waves-light" style={that.state.style} onClick={this.showDetailView}>
+      <div className={`card waves-effect waves-light ${this.props.isCurrent ? 'current' : ''}`} style={that.state.style}
+           onClick={this.showDetailView}>
+
         {
-          events.length === 1 &&
-          <div>{events[0].name}</div>
-        }
-        {
-          events.length > 1 &&
-          <div>multiple</div>
+          events.length > 0 &&
+          events.map(event => (
+            <div className='event-item' key={Math.random()}>{event.name}</div>
+          ))
         }
       </div>
     )

@@ -57,16 +57,14 @@ class DetailCard extends Component {
 
   constructor(props) {
     super(props);
-    this.closeView = this.closeView.bind(this);
-    this.addEvent = this.addEvent.bind(this);
   }
 
-  closeView() {
+  closeView = () => {
     // document.body.className = "";
     this.props.hide();
-  }
+  };
 
-  addEvent() {
+  addEvent = () => {
 
     const event = {
       time: this.props.detailView.pos,
@@ -76,7 +74,7 @@ class DetailCard extends Component {
     };
 
     this.props.addEvent({event}, this.context.store.getState().schedule);
-  }
+  };
 
   render() {
     const that = this;
@@ -87,9 +85,10 @@ class DetailCard extends Component {
         {overlay(that.closeView)}
         {
           <div id="detail-card" className={that.props.detailView.shown ? 'expand' : 'minimize'}>
-            <span>{pos}</span>
+            <span id='event-time'>{pos}</span>
             <ul className="collection">
-              {event.map((e, i) => (<EditableEvent time={`${pos} ${i}`} key={`${pos} ${i}`} event={e}/>))}
+              {event.map((e, i) => (
+                <EditableEvent time={`${pos} ${i}`} key={`${ Date.now()} ${pos} ${i}`} event={e}/>))}
             </ul>
             <a onClick={this.addEvent} className="btn-floating right btn-large waves-effect waves-light green"><i
               className="material-icons">+</i></a>

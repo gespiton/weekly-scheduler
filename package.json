@@ -12,7 +12,7 @@
     "prestart": "npm run start-message",
     "start": "concurrently -k -r -s first \"npm run test:watch\" \"npm run open:src\" \"npm run lint:watch\"",
     "s": "concurrently -k -r -s first  \"npm run open:src\" ",
-    "open:src": "babel-node tools/srcServer.js",
+    "open:src": "babel-node --max-old-space-size=4096 tools/srcServer.js",
     "open:dist": "babel-node tools/distServer.js",
     "lint": "esw webpack.config.* src tools --color",
     "lint:watch": "npm run lint -- --watch",
@@ -136,12 +136,11 @@
           [
             "env",
             {
-              "es2015": {
-                "modules": false
-              },
               "targets": {
-                "ie": 9,
-                "uglify": true
+                "browsers": [
+                  "last 2 versions",
+                  "safari >= 7"
+                ]
               }
             }
           ],

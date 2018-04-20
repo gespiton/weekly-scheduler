@@ -1,48 +1,53 @@
-.editable-event-card
-  .item
-    display: grid
-    grid-template-columns: 1fr 4fr
+#detail-card
+  ul.collection
+    border: none
+    margin-top: 1.5em
 
-    height: 4rem
-    padding: 0.5em 0
+    .editable-event-card
+      margin-bottom: 1em
+      border: none
 
-    .attr
-      background-color: #66a27f
-      color: whitesmoke
+      .item
+        display: grid
+        grid-template-columns: 1fr 9fr
 
-      align-self: center
-      border-radius: 4px
-      padding: 5px 10px
-      margin-right: 1em
-    //height: 100%
+        .attr
+          //background-color: #66a27f
+          color: cadetblue
+          align-self: center
 
-    span.val
-      align-self: center
-      border-radius: 4px
-      padding: 5px 10px
-      font-size: 1.2rem
-      font-weight: bold
+        span.val
+          align-self: center
+          border-radius: 4px
+          padding: 5px 10px
+          font-weight: bold
+          text-align: left
 
-      text-align: left
+        input.val
+          align-self: center
+          margin: 0
+          display: inline-block
+          text-indent: 0.5em
+        select.val
+          align-self: center
+          margin: 0
+          display: inline-block
 
+        &.edit
+          height: 4rem
 
-    input.val
-      margin: 0
-      display: inline-block
-    select.val
-      margin: 0
-      display: inline-block
+      .operation-panel
+        display: flex
+        flex-direction: row
+        justify-content: space-around
+        font-size: 1.5em
+        transition: all 0.3s ease-in-out
+        height: 2em
 
-  .operation-panel
-    display: flex
-    flex-direction: row
-    justify-content: space-around
-    font-size: 2em
-    transition: all 0.3s ease-in-out
-    height: 2em
+        &.minimize
+          height: 0
+          overflow: hidden
 
-    &.minimize
-      height: 0
 
 
 
