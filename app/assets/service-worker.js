@@ -1,10 +1,8 @@
 // Set this to true for production
-var doCache = true;
-var db;
+const doCache = true;
 
 // Name our cache
-const CACHE_NAME = 'my-pwa-cache-v1';
-const DB_NAME = 'weekly-db';
+const CACHE_NAME = 'my-pwa-cache-v2';
 
 // Delete old caches that are not our current one!
 self.addEventListener("activate", event => {
@@ -24,46 +22,10 @@ self.addEventListener("activate", event => {
           })
       )
   );
-
-  createDb();
-
 });
-
-function createDb() {
-  const request = indexedDB.open(DB_NAME, 2);
-
-  request.onerror = function (event) {
-    console.error("db error, ", event);
-  };
-
-  request.onsuccess = function (event) {
-    console.log("db request success");
-    db = event.target.result;
-
-    db.onerror = function (event) {
-      alert("Database error: " + event.target.errorCode);
-    };
-  };
-
-
-  request.onupgradeneeded = function (event) {
-    console.log('on upgrade');
-    const db = event.target.result;
-
-    const objectStore = db.createObjectStore("schedules", {keyPath: "name"});
-
-    objectStore.createIndex("name", "name", {unique: false});
-
-    objectStore.transaction.oncomplete = function () {
-      // const customerObjectStore = db.transaction("schedules", "readwrite").objectStore("schedules");
-      // customerObjectStore.add({name: 'haha', ssn: 'ssn'});
-    };
-  };
-}
 
 // The first time the user starts up the PWA, 'install' is triggered.
 self.addEventListener('install', function (event) {
-  self.skipWaiting();
   if (doCache) {
     event.waitUntil(
       caches.open(CACHE_NAME)

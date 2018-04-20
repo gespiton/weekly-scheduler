@@ -88,18 +88,20 @@ class EditableEvent extends Component {
 
   render() {
     return (
-      <div className="editable-event-card collection-item card"
+      <div className="editable-event-card collection-item"
            onClick={this.state.panelOpen ? undefined : this.openPanel}>
-        <div className="item">
-          <span className="attr">name</span>
+        <div className={`item ${this.state.panelOpen ? 'edit' : ''}`}>
+          {/*<span className="attr">name</span>*/}
+          <i className="attr fas fa-book"/>
           {
             this.state.panelOpen
               ? <input className="val" name="name" value={this.state.name} onChange={this.changeValue}/>
               : <span className='val'>{this.state.name}</span>
           }
         </div>
-        <div className="item">
-          <span className="attr">place</span>
+        <div className={`item ${this.state.panelOpen ? 'edit' : ''}`}>
+          {/*<span className="attr">place</span>*/}
+          <i className="attr fas fa-map-marker"/>
           {
             this.state.panelOpen
               ? <input className="val" name="place" value={this.state.place} onChange={this.changeValue}/>
@@ -109,8 +111,8 @@ class EditableEvent extends Component {
 
         {
           this.state.panelOpen &&
-          <div className="item">
-            <span className="attr">week</span>
+          <div className={`item ${this.state.panelOpen ? 'edit' : ''}`}>
+            <i className="attr fas fa-clock"/>
             <select className="val" value={this.state.week} onChange={this.changeValue}>
               {/*{weekSelector(this.state.week)}*/}
               <option value='every'>every</option>

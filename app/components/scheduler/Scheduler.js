@@ -8,35 +8,34 @@ import PropType from 'prop-types';
 import api from '../../api/index';
 import {toggleLoader, populateSchedule} from '../../redux/actions/index';
 import wrapper from '../../utils/requestWrapper';
-import getCurrentWeek from '../../utils/time';
-import dbConstants from '../../constants/dbConstants';
+import timeUtils from '../../utils/time';
 
 const createDay = (data, dayOfWeek) => {
   data = data || [];
 
-  const arr = [];
+  const eventArr = [];
+  data.forEach(e => eventArr[e.slot - 1] = e);
 
-  data.forEach(e => arr[e.slot - 1] = e);
+  const currentPos = timeUtils.getCurrentPos();
+  console.log('current pos: ', currentPos);
 
 
   const components = [];
   for (let i = 0; i !== 6; ++i) { //todo hard code number
     const key = `${dayOfWeek} ${i + 1}`;
-    if (arr[i]) {
-      components.push(<EventCard key={key} pos={key} event={arr[i].events}/>);
+    if (eventArr[i]) {
+      components.push(<EventCard key={key} pos={key} event={eventArr[i].events} isCurrent={currentPos === key}/>);
     } else {
       components.push(<div key={key} className="card empty"/>)
     }
   }
 
   return (
-    <ul className="day">
+    <ul className="day" key={dayOfWeek}>
       {components}
     </ul>
   )
 };
-
-
 
 
 @connect(
@@ -72,17 +71,6 @@ class Scheduler extends Component {
   constructor(props) {
     super(props);
 
-    this.pressRelease = this.pressRelease.bind(this);
-    this.cardPressed = this.cardPressed.bind(this);
-  }
-
-  //todo delete long press action
-  pressRelease(e) {
-    clearTimeout(this.pressTimer);
-  }
-
-  cardPressed(e) {
-    this.pressTimer = setTimeout(() => alert(e.currentTarget), 2000);
   }
 
   componentDidMount() {
@@ -102,15 +90,7 @@ class Scheduler extends Component {
           <span>Wed</span>
           <span>Thr</span>
           <span>Fri</span>
-          <span>Sat</span>
-          <span>Sun</span>
-          {createDay(this.props.schedule.monday, day.monday)}
-          {createDay(this.props.schedule.tuesday, day.tuesday)}
-          {createDay(this.props.schedule.wednesday, day.wednesday)}
-          {createDay(this.props.schedule.thursday, day.thursday)}
-          {createDay(this.props.schedule.friday, day.friday)}
-          {createDay(this.props.schedule.saturday, day.saturday)}
-          {createDay(this.props.schedule.sunday, day.sunday)}
+          {[day.monday, day.tuesday, day.wednesday, day.thursday, day.friday].map(day => createDay(this.props.schedule[day], day))}
         </main>
       </div>
     );

@@ -1,4 +1,5 @@
 ## later
+- [ ] add timestamp to every record
 - [ ] odd even week
 - [ ] save to idb when needed
 - [ ] localize font-awesome package
