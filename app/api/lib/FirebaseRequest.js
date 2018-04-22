@@ -30,7 +30,6 @@ class FirebaseRequest {
   }
 
   excute = (...arg) => {
-    console.log(this);
     this._checkNetwork();
     this.requestArg = arg;
     if (this.online) {

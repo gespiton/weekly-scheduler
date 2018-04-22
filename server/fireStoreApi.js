@@ -18,7 +18,7 @@ function updateDefaultSchedule(schedule) {
 }
 
 function initializeRoute(router) {
-  router.get('/db/schedule/default', function (req, res) {
+  router.get('/db/schedules/default', function (req, res) {
     getDefaultSchedule()
       .then(doc => {
         res.json(doc.data());
@@ -29,7 +29,7 @@ function initializeRoute(router) {
       });
   });
 
-  router.post('/db/schedule/default', function (req, res) {
+  router.post('/db/schedules/default', function (req, res) {
     const schedule = req.body;
     updateDefaultSchedule(schedule)
       .then(() => {

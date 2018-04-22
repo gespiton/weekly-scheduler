@@ -10,9 +10,37 @@ const options = {
     'x-sent': true
   }
 };
+const isDev = process.env.NODE_ENV !== 'production';
 
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, '../dist')));
+
+
+if (isDev) {
+  console.log('dev mode');
+  const webpack = require('webpack'),
+    webpackDevMiddleware = require('webpack-dev-middleware'),
+    webpackHotMiddleware = require('webpack-hot-middleware'),
+    webpackDevConfig = require('../webpack.config.dev');
+
+  const compiler = webpack(webpackDevConfig);
+
+  // attach to the compiler & the web
+  app.use(webpackDevMiddleware(compiler, {
+
+    publicPath: webpackDevConfig.output.publicPath,
+    // noInfo: true,
+    stats: {
+      colors: true
+    }
+  }));
+  app.use(webpackHotMiddleware(compiler, {
+    log: console.log
+  }));
+
+} else {
+  app.use(express.static(path.join(__dirname, '../dist')));
+}
+
 
 const dbRouter = express.Router();
 const fireStoreApi = require('./fireStoreApi');
@@ -48,7 +76,10 @@ app.use(function (err, req, res, next) {
   res.send("error");
 });
 
-app.listen(4000, function () {
+
+const http = require('http');
+const server = http.createServer(app);
+server.listen(4000, function () {
   console.log('App (dev) is now running on port 4000!');
 });
 

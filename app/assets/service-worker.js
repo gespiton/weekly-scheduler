@@ -2,7 +2,7 @@
 const doCache = true;
 
 // Name our cache
-const CACHE_NAME = 'my-pwa-cache-v2';
+const CACHE_NAME = 'my-pwa-cache-v3';
 
 
 // Delete old caches that are not our current one!
@@ -32,7 +32,7 @@ self.addEventListener('install', function (event) {
       caches.open(CACHE_NAME)
         .then(
           cache => {
-            cache.addAll(['/']);
+            cache.addAll(['/', '/bundle.js', '/all.js']);
           }
           // function (cache) {
           //   // Get the assets manifest so we can see what our js file is named
@@ -60,23 +60,29 @@ self.addEventListener('install', function (event) {
 
 // When the webpage goes to fetch files, we intercept that request and serve up the matching files
 // if we have them
-self.addEventListener('fetch', function (event) {
-  if (doCache) {
-    event.respondWith(
-      caches.match(event.request)
-        .then(function (response) {
-          return response || caches.open(CACHE_NAME)
-            .then(cache => {
-              // return cache.add(event.request.url);
-              return fetch(event.request)
-                .then(response => {
-                  if (event.request.method === 'GET')
-                    cache.put(event.request, response.clone());
-                  return response;
-                });
-            })
-        })
-    );
-  }
-});
+
+const notCache = [
+  '/db'
+];
+
+// self.addEventListener('fetch', function (event) {
+//   if (doCache) {
+//     event.respondWith(
+//       caches.match(event.request)
+//         .then(function (response) {
+//           return response || caches.open(CACHE_NAME)
+//             .then(cache => {
+//               // return cache.add(event.request.url);
+//               return fetch(event.request)
+//                 .then(response => {
+//                   if (event.request.method === 'GET') {
+//                     // cache.put(event.request, response.clone());
+//                   }
+//                   return response;
+//                 });
+//             })
+//         })
+//     );
+//   }
+// });
 
