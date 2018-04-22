@@ -17,8 +17,6 @@ const createDay = (data, dayOfWeek) => {
   data.forEach(e => eventArr[e.slot - 1] = e);
 
   const currentPos = timeUtils.getCurrentPos();
-  console.log('current pos: ', currentPos);
-
 
   const components = [];
   for (let i = 0; i !== 6; ++i) { //todo hard code number

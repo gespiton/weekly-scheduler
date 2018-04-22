@@ -2,7 +2,7 @@
 const doCache = true;
 
 // Name our cache
-const CACHE_NAME = 'my-pwa-cache-v3';
+const CACHE_NAME = 'my-pwa-cache-v4';
 
 
 // Delete old caches that are not our current one!
@@ -62,27 +62,36 @@ self.addEventListener('install', function (event) {
 // if we have them
 
 const notCache = [
-  '/db'
+  /\/db/
 ];
 
-// self.addEventListener('fetch', function (event) {
-//   if (doCache) {
-//     event.respondWith(
-//       caches.match(event.request)
-//         .then(function (response) {
-//           return response || caches.open(CACHE_NAME)
-//             .then(cache => {
-//               // return cache.add(event.request.url);
-//               return fetch(event.request)
-//                 .then(response => {
-//                   if (event.request.method === 'GET') {
-//                     // cache.put(event.request, response.clone());
-//                   }
-//                   return response;
-//                 });
-//             })
-//         })
-//     );
-//   }
-// });
+self.addEventListener('fetch', function (event) {
+  if (doCache) {
+    let matched = false;
+    notCache.forEach(reg => {
+      if (event.request.url.match(reg)) {
+        matched = true;
+      }
+    });
+
+    if (matched) return;
+
+    event.respondWith(
+      caches.match(event.request)
+        .then(function (response) {
+          return response || caches.open(CACHE_NAME)
+            .then(cache => {
+              // return cache.add(event.request.url);
+              return fetch(event.request)
+                .then(response => {
+                  if (event.request.method === 'GET') {
+                    cache.put(event.request, response.clone());
+                  }
+                  return response;
+                });
+            })
+        })
+    );
+  }
+});
 
