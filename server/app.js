@@ -1,8 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-
-
+const bodyParser = require('body-parser');
 const options = {
   root: path.join(__dirname, '../dist/'),
   dotfiles: 'deny',
@@ -12,8 +11,13 @@ const options = {
   }
 };
 
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../dist')));
 
+const dbRouter = express.Router();
+const fireStoreApi = require('./fireStoreApi');
+fireStoreApi(dbRouter);
+app.use(dbRouter);
 app.use('/', (req, res) => {
   console.log(req.url);
   res.sendFile('./index.html', options, function (err) {
@@ -24,11 +28,6 @@ app.use('/', (req, res) => {
     }
   });
 });
-
-// app.use('/', (req, res) => {
-//   console.log(req.url);
-//   res.sendFile('./service-worker.js', options);
-// });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -49,38 +48,8 @@ app.use(function (err, req, res, next) {
   res.send("error");
 });
 
-const http = require('http');
-const server = http.createServer(app);
-server.listen(4000, function () {
+app.listen(4000, function () {
   console.log('App (dev) is now running on port 4000!');
-
-  const admin = require("firebase-admin");
-  const config = {
-    apiKey: "AIzaSyBtjdIpz-4Lq3vSDPRCIiyRAlEmwR-qNKE",
-    authDomain: "weekly-scheduler.firebaseapp.com",
-    databaseURL: "https://weekly-scheduler.firebaseio.com",
-    projectId: "weekly-scheduler",
-    storageBucket: "",
-    messagingSenderId: "525804016085"
-  };
-  const serviceAccount = require(config);
-
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://weekly-scheduler.firebaseio.com"
-  });
-
-  const firebase = require("firebase");
-  require("firebase/firestore");
-
-
-  firebase.initializeApp(config);
-  const db = firebase.firestore();
-  const col_schedule = 'schedules';
-  db.collection(col_schedule).doc('default').get()
-    .then(doc => {
-      console.log(doc);
-    });
 });
 
 
