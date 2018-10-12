@@ -3,12 +3,11 @@
 // import ManifestPlugin from 'webpack-manifest-plugin';
 // import path from 'path';
 // import CopyWebpackPlugin from 'copy-webpack-plugin';
-const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ManifestPlugin = require('webpack-manifest-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
-
+const path = require('path')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const ManifestPlugin = require('webpack-manifest-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const webpack = require('webpack')
 
 module.exports = {
   resolve: {
@@ -18,14 +17,11 @@ module.exports = {
   entry: {
     bundle: [
       // must be first entry to properly set public path
-      './app/webpack-public-path',
+      path.join(__dirname, './app/webpack-public-path'),
       'react-hot-loader/patch',
       'webpack-hot-middleware/client?reload=true',
       path.resolve(__dirname, 'app/index.js') // Defining path seems necessary for this to work consistently on Windows machines.
     ]
-    // "service-worker": [
-    //   './app/service-worker'
-    // ]
   },
   target: 'web',
   output: {
@@ -42,15 +38,15 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({     // Create HTML file that includes references to bundled CSS and JS.
-      template: 'app/index.ejs',
+      template: path.join(__dirname, 'app/index.ejs'),
       minify: {
         removeComments: true,
         collapseWhitespace: true
       },
       inject: true
     }),
-    new CopyWebpackPlugin([{from: path.resolve(__dirname, 'app/assets'), to: path.resolve(__dirname, 'dist')}]),
-    new ManifestPlugin({fileName: 'asset-manifest.json'})
+    new CopyWebpackPlugin([{ from: path.resolve(__dirname, 'app/assets'), to: path.resolve(__dirname, 'dist') }]),
+    new ManifestPlugin({ fileName: 'asset-manifest.json' })
   ],
   module: {
     rules: [
@@ -61,7 +57,7 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             plugins: [
-              "transform-decorators-legacy",
+              'transform-decorators-legacy',
               'transform-class-properties'
             ]
           }
@@ -146,4 +142,4 @@ module.exports = {
       }
     ]
   }
-};
+}
