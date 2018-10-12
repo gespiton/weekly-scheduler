@@ -1,29 +1,28 @@
 // Set this to true for production
-const doCache = true;
+const doCache = true
 
 // Name our cache
-const CACHE_NAME = 'my-pwa-cache-v4';
-
+const CACHE_NAME = 'my-pwa-cache-v4'
 
 // Delete old caches that are not our current one!
-self.addEventListener("activate", event => {
-  const cacheWhitelist = [CACHE_NAME];
+self.addEventListener('activate', event => {
+  const cacheWhitelist = [CACHE_NAME]
   event.waitUntil(
     caches.keys()
       .then(keyList =>
         Promise
           .all(keyList.map(key => {
             if (!cacheWhitelist.includes(key)) {
-              console.log('Deleting cache: ' + key);
-              return caches.delete(key);
+              console.log('Deleting cache: ' + key)
+              return caches.delete(key)
             }
           }))
           .then(() => {
-            console.log('activated');
+            console.log('activated')
           })
       )
-  );
-});
+  )
+})
 
 // The first time the user starts up the PWA, 'install' is triggered.
 self.addEventListener('install', function (event) {
@@ -32,7 +31,7 @@ self.addEventListener('install', function (event) {
       caches.open(CACHE_NAME)
         .then(
           cache => {
-            cache.addAll(['/', '/bundle.js', '/all.js']);
+            cache.addAll(['/', '/bundle.js'])
           }
           // function (cache) {
           //   // Get the assets manifest so we can see what our js file is named
@@ -54,27 +53,27 @@ self.addEventListener('install', function (event) {
           //     })
           // }
         )
-    );
+    )
   }
-});
+})
 
 // When the webpage goes to fetch files, we intercept that request and serve up the matching files
 // if we have them
 
 const notCache = [
   /\/db/
-];
+]
 
 self.addEventListener('fetch', function (event) {
   if (doCache) {
-    let matched = false;
+    let matched = false
     notCache.forEach(reg => {
       if (event.request.url.match(reg)) {
-        matched = true;
+        matched = true
       }
-    });
+    })
 
-    if (matched) return;
+    if (matched) return
 
     event.respondWith(
       caches.match(event.request)
@@ -85,13 +84,13 @@ self.addEventListener('fetch', function (event) {
               return fetch(event.request)
                 .then(response => {
                   if (event.request.method === 'GET') {
-                    cache.put(event.request, response.clone());
+                    cache.put(event.request, response.clone())
                   }
-                  return response;
-                });
+                  return response
+                })
             })
         })
-    );
+    )
   }
-});
+})
 

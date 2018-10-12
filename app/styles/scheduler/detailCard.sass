@@ -1,5 +1,8 @@
+#detail-card-wrapper
+  width: 100vw
+  height: 100vh
 .overlay
-  position: fixed
+  position: absolute
   top: 0
   left: 0
   width: 100%
@@ -10,17 +13,16 @@
   transition: all 0.3s
 
 .hidden
-  visibility: hidden
-  opacity: 0
-  //height: 0
+  //visibility: hidden
+
+  transform: translateX(-100vw)
   transition: all 0.3s
 
 .invisible
-  opacity: 1
   transition: all 0.3s
 
 #detail-card
-  position: fixed
+  position: absolute
   height: 70%
   top: 15%
   left: 5%
@@ -42,7 +44,7 @@
     font-style: italic
 
   &.minimize
-    height: 0
+    //height: 0
     overflow: hidden
 
 

@@ -81,10 +81,10 @@ class DetailCard extends Component {
     const event = this.props.detailView.event;
     const pos = this.props.detailView.pos;
     return (
-      <div className={'no-space ' + (that.props.detailView.shown ? 'invisible' : 'hidden')}>
+      <div id='detail-card-wrapper' className={'no-space ' + (that.props.detailView.shown ? 'invisible' : 'hidden')}>
         {overlay(that.closeView)}
         {
-          <div id="detail-card" className={that.props.detailView.shown ? 'expand' : 'minimize'}>
+          <div id="detail-card" className={that.props.detailView.shown ? '' : 'minimize'}>
             <span id='event-time'>{pos}</span>
             <ul className="collection">
               {event.map((e, i) => (
